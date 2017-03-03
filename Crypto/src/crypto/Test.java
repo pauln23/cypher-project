@@ -9,11 +9,12 @@ import static java.lang.System.*;
  */
 public class Test {
     public static void main(String... args) throws Exception {
-//        CryptedFile cf = new CryptedFile(new File("/Users/adlerd/workspace/IdeaProjects/cypher/Crypto/src/crypto/test.txt"));
-//        KeyFile kf = new KeyFile("exgr5itfruyvrdbgj", 9);
-//
-//        String key = kf.getKey();
-//
-//        out.println("KEY: " + key);
+        File in = new File("/Users/adlerd/workspace/IdeaProjects/cypher/Crypto/src/crypto/test.txt");
+        File out = new File("/Users/adlerd/workspace/IdeaProjects/cypher/Crypto/src/crypto/out.txt");
+
+        CryptedFile cf = new CryptedFile(in);
+        KeyFile kf = new KeyFile("password", 1);
+
+        cf.encryptToFile(kf, out);
     }
 }

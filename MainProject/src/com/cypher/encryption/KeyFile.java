@@ -1,10 +1,9 @@
-package crypto;
+package com.cypher.encryption;
 
 /**
  * Created by adlerd on 3/2/17.
  */
 
-import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,6 +31,7 @@ public class KeyFile {
         int i = 0;
         for (final byte b : md5) {
 //            output += StringUtil.reverseString(Integer.toHexString(b & saltBytes[i]).substring(0, 1));
+            output += Integer.toHexString(b & saltBytes[i]).substring(0, 1);
             if(i < (salt.length() -1)) {
                 i++;
             }

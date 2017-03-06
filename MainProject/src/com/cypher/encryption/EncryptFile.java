@@ -1,7 +1,7 @@
-package crypto;
+package com.cypher.encryption;
 
 /**
- * Created by adlerd on 3/2/17.
+ * Created by Zachery Shelton on 8/25/13.
  */
 
 import javax.crypto.Cipher;
@@ -11,18 +11,15 @@ import java.util.Arrays;
 
 import static java.lang.System.out;
 
-/**
- * Created by HUE on 8/25/13.
- */
-public class CryptedFile {
+public class EncryptFile {
     private File file;
     private byte[] data;
 
-    public CryptedFile(final File file) {
+    public EncryptFile(final File file) {
         this.file = file;
     }
 
-    public CryptedFile(final byte[] data) {
+    public EncryptFile(final byte[] data) {
         this.data = data;
     }
 
@@ -48,10 +45,13 @@ public class CryptedFile {
     }
 
     public byte[] encryptToData(final KeyFile key) throws Exception {
+        // Initialize byte[] as null
         byte[] preData = null;
+        // If the file is a real thing
         if(file != null){
+            // Set the amount of 0s in 'preData' to the length of the text in the file
             preData = new byte[(int) this.file.length()];
-            out.println("Pre-Data byte[]: " + Arrays.toString(preData));
+            //
             final FileInputStream inputStream = new FileInputStream(this.file);
             inputStream.read(preData);
         } else {

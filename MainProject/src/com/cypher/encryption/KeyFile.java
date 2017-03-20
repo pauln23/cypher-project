@@ -4,8 +4,14 @@ package com.cypher.encryption;
  * Created by adlerd on 3/2/17.
  */
 
+import com.cypher.utils.FileUtil;
+
+import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import static java.lang.System.*;
 
 public class KeyFile {
     private String rawKey;
@@ -23,15 +29,23 @@ public class KeyFile {
         this.salt = keyFile.wrappedKey();
     }
 
-    public String getKey() throws NoSuchAlgorithmException {
+    // Set custom salt
+    public void setSalt(String salt){
+        this.salt = salt;
+    }
+
+    private String getKey() throws NoSuchAlgorithmException {
         String output = "";
         final MessageDigest md = MessageDigest.getInstance("MD5");
         final byte[] md5 = md.digest(rawKey.getBytes());
+        // Turn the salt String into byte[]
         final byte[] saltBytes = this.salt.getBytes();
         int i = 0;
+        out.print("\n[DEBUG] KeyFile: ");
         for (final byte b : md5) {
 //            output += StringUtil.reverseString(Integer.toHexString(b & saltBytes[i]).substring(0, 1));
             output += Integer.toHexString(b & saltBytes[i]).substring(0, 1);
+            out.print("" + Integer.toHexString(b & saltBytes[i]).substring(0, 1));
             if(i < (salt.length() -1)) {
                 i++;
             }
@@ -39,6 +53,7 @@ public class KeyFile {
                 i = 0;
             }
         }
+        out.println("\n");
         if(output.length() > 16){
             return output.substring(0,16).trim();
         }
@@ -47,7 +62,7 @@ public class KeyFile {
         }
     }
 
-    public String wrappedKey(){
+    String wrappedKey(){
         try {
             return getKey();
         } catch (NoSuchAlgorithmException e) {
@@ -56,8 +71,8 @@ public class KeyFile {
         return null;
     }
 
-//    public void writeToFile() {
-//        final File file = new File(FileUtil.getLacedDir(), String.format("key%s.key", this.keyID));
-//        FileUtil.writeToFile(this.wrappedKey().getBytes(), file);
-//    }
+    public void writeToFile(String path) throws IOException{
+        final File file = new File(path, String.format("key%s.key", this.keyID));
+        FileUtil.writeToFile(this.wrappedKey().getBytes(), file);
+    }
 }

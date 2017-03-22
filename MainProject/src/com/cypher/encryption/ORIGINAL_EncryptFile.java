@@ -7,19 +7,16 @@ package com.cypher.encryption;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.util.Arrays;
 
-import static java.lang.System.out;
-
-public class EncryptFile {
+public class ORIGINAL_EncryptFile {
     private File file;
     private byte[] data;
 
-    public EncryptFile(final File file) {
+    public ORIGINAL_EncryptFile(final File file) {
         this.file = file;
     }
 
-    public EncryptFile(final byte[] data) {
+    public ORIGINAL_EncryptFile(final byte[] data) {
         this.data = data;
     }
 

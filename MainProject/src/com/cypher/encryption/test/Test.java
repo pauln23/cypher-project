@@ -23,9 +23,9 @@ public class Test {
         System.out.println("Unencrypted byte[]: " + Arrays.toString(str.getBytes()));
 //        testFileEncrypt(in, "password");
 //        testFileEncrypt(in, out, "password");
-//        testFileEncrypt(fileIn, fileOut, "password");
+        testFileEncrypt(fileIn, fileOut, "password");
         // WORKS
-        testStringEncrypt(str, "1234567890");
+//        testStringEncrypt(str, "1234567890");
 
     }
 

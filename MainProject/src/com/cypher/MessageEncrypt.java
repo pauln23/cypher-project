@@ -6,8 +6,8 @@ package com.cypher;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.logging.Level;
@@ -21,15 +21,15 @@ public class MessageEncrypt extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try {
-            SplitPane page = FXMLLoader.load(getClass().getResource("MessageEncrypt.fxml"));
+            Parent page = FXMLLoader.load(getClass().getResource("MessageEncrypt.fxml"));
             Scene scene = new Scene(page);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Message Encryptor");
+            primaryStage.setTitle("Encrypt");
             primaryStage.show();
         } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "CRASH!!! BANG!!! BOOM!!!", ex);
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "CRASH!", ex);
         }
     }
 }

@@ -1,26 +1,19 @@
 package com.cypher;
 
-import com.cypher.encryption.EncryptString;
-
+import com.cypher.encryption.Encrypt;
 import com.cypher.encryption.KeyFile;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TextField;
 
 import static java.lang.System.out;
 
 /**
- * Created by adlerd on 3/3/17.
+ * Created on 3/3/17.
  */
-public class MessageEncryptController implements Initializable {
+public class MessageEncryptController {
     @FXML
     private Button encryptButton;
     @FXML
@@ -28,44 +21,55 @@ public class MessageEncryptController implements Initializable {
     @FXML
     private TextField saltyField;
     @FXML
-    private TextArea unencryptedInput;
+    private TextField textInput;
     @FXML
-    private TextArea encryptedOutput;
+    private TextField encryptedOutput;
     @FXML
-    private Label outputLabel;
+    private MenuButton encryptMethod;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        assert encryptButton != null : "fx:id=\"encryptButton\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
-        assert saltyField != null : "fx:id=\"saltyField\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
-        assert unencryptedInput != null : "fx:id=\"unencryptedInput\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
-        assert encryptedOutput != null : "fx:id=\"encryptedOutput\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
-        assert outputLabel != null : "fx:id=\"outputLabel\" was not injected: check your FXML file 'MessageEncrypt.fxml'.";
+    private String salt = "";
+    private String password;
+    private String input;
+    private String output;
 
-        // initialize your logic here: all @FXML variables will have been injected
 
-        encryptButton.setOnAction(event -> {
-            String salt = "much";
-            String password = passwordField.getText();
-            String input = unencryptedInput.getParagraphs().toString().replace("[", "").replace("]", "").replace(",", "").replace("\n", "").trim();
 
-            out.println("Encrypting!");
 
-            // Run teh file encryption
-            EncryptString cryptStr = new EncryptString(input);
-            KeyFile key = new KeyFile(password, 0);
-
-            try {
-                outputLabel.setText(cryptStr.encryptToStringAES(key));
-            } catch (Exception ex){
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "YOU MESSED UP ENCRYPTING THE STRING!!!", ex);
-            }
-
-            // Done
-            out.println("Encrypted!");
-        });
-
+    private static String stringEncrypt(String str, String password) throws Exception{
+        Encrypt strCrypt = new Encrypt(str);
+        KeyFile key = new KeyFile(password, 1);
+        return strCrypt.encryptToByteValues(key);
     }
 
+    private static String stringEncrypt(String str, String password, String salt) throws Exception{
+        Encrypt strCrypt = new Encrypt(str);
+        KeyFile key = new KeyFile(password, 1);
+        key.setSalt(salt);
+        return strCrypt.encryptToByteValues(key);
+    }
+
+    public void encrypt() throws Exception{
+        password = passwordField.getText();
+        input = textInput.getText();
+        salt = saltyField.getText();
+
+        if (!salt.equalsIgnoreCase("")) {
+            try {
+                output = stringEncrypt(input, password, salt);
+                encryptedOutput.setText(output);
+                out.println(output);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                output = stringEncrypt(input, password);
+                encryptedOutput.setText(output);
+                out.println(output);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

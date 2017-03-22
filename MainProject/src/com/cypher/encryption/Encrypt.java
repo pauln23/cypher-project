@@ -59,14 +59,12 @@ public class Encrypt {
     private String mode = "ECB";
     private String padding = "PKCS5Padding";
     private String encryptionMethod = algorithm + "/" + mode + "/" + padding;
-//    private String pathIn;
-//    private String pathOut;
     private byte[] data;
     private File fileIn;
     private File fileOut;
 
     /**
-     * Constructor for
+     * Constructor for encrypting a String
      *
      * @param data
      */
@@ -75,6 +73,7 @@ public class Encrypt {
     }
 
     /**
+     * Constructor for encrypting a byte[] of data
      *
      * @param data
      */
@@ -83,7 +82,7 @@ public class Encrypt {
     }
 
     /**
-     * Coctructor for encrypting the contents of 'fileIn' and then outputting it to 'fileOut'
+     * Constructor for encrypting the contents of 'fileIn' and then outputting it to 'fileOut'
      *
      * @param fileIn
      */
@@ -182,7 +181,7 @@ public class Encrypt {
         final Cipher cipher = Cipher.getInstance(encryptionMethod);
         final SecretKeySpec secretKey = new SecretKeySpec(key.wrappedKey().getBytes(),algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        return Arrays.toString(cipher.doFinal(data));
+        return new String(cipher.doFinal(data), "UTF-8");
     }
 
     /**

@@ -14,24 +14,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cypher.MessageEncrypt">
-  <tabs>
-    <Tab closable="false" text="Encrypt Data">
-      <content>
-        <AnchorPane prefHeight="427.0" prefWidth="235.0">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cypher.MessageEncrypt">
+   <tabs>
+      <Tab closable="false" text="Encrypt Data">
+         <content>
+            <AnchorPane prefHeight="468.0" prefWidth="541.0">
                <children>
                   <Separator layoutY="267.0" prefHeight="0.0" prefWidth="299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Label layoutX="215.0" layoutY="269.0" prefHeight="24.0" prefWidth="111.0" text="Encrypted Output" />
                   <Separator layoutX="293.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="271.0" prefWidth="6.0" AnchorPane.bottomAnchor="218.0" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="242.0" AnchorPane.topAnchor="-4.0" />
                   <VBox alignment="CENTER" layoutX="296.0" prefHeight="267.0" prefWidth="225.0" spacing="25.0">
                      <children>
+                        <Button fx:id="buttonLoadEncrypt" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" text="Load File" />
                         <TextField fx:id="saltEncrypt" prefHeight="27.0" prefWidth="200.0" promptText="Salt (optional)" />
                         <PasswordField fx:id="passwordEncrypt" prefHeight="27.0" prefWidth="201.0" promptText="Password" />
                         <SplitMenuButton fx:id="methodEncrypt" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" text="Encrypt Method">
-                          <items>
-                            <MenuItem mnemonicParsing="false" text="AES/CBC/PKCS5Padding" />
-                            <MenuItem mnemonicParsing="false" text="AES/ECB/PKCS5Padding" />
-                          </items>
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="AES/CBC/PKCS5Padding" />
+                              <MenuItem mnemonicParsing="false" text="AES/ECB/PKCS5Padding" />
+                           </items>
                         </SplitMenuButton>
                         <Button fx:id="buttonEncrypt" mnemonicParsing="false" onAction="#encrypt" prefHeight="27.0" prefWidth="200.0" text="Encrypt" />
                      </children>
@@ -40,19 +41,22 @@
                      </padding>
                   </VBox>
                   <TextArea fx:id="inputEncrypt" layoutX="7.0" layoutY="-1.0" prefHeight="267.0" prefWidth="294.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <TextArea fx:id="outputEncrypt" layoutX="-11.0" layoutY="295.0" prefHeight="132.0" prefWidth="536.0" />
-               </children></AnchorPane>
-      </content>
-    </Tab>
+                  <TextArea fx:id="outputEncrypt" layoutX="-11.0" layoutY="295.0" prefHeight="120.0" prefWidth="536.0" />
+                  <Button fx:id="buttonSaveEncrypt" layoutX="182.0" layoutY="426.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Save To File" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
       <Tab closable="false" text="Decrypt Data">
          <content>
             <AnchorPane prefHeight="25.0" prefWidth="541.0">
                <children>
                   <Separator layoutY="267.0" prefHeight="0.0" prefWidth="299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label fx:id="decryptedOutputLabel" layoutX="209.0" layoutY="269.0" prefHeight="24.0" prefWidth="117.0" text="Decrypted Output" />
+                  <Label layoutX="209.0" layoutY="269.0" prefHeight="24.0" prefWidth="117.0" text="Decrypted Output" />
                   <Separator layoutX="206.0" orientation="VERTICAL" prefHeight="267.0" prefWidth="6.0" AnchorPane.bottomAnchor="292.0" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="0.0" />
-                  <VBox alignment="CENTER" layoutY="-1.0" prefHeight="268.0" prefWidth="200.0" spacing="30.0">
+                  <VBox alignment="CENTER" layoutY="-1.0" prefHeight="268.0" prefWidth="200.0" spacing="25.0">
                      <children>
+                        <Button fx:id="buttonLoadDecrypt" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" text="Load File" />
                         <TextField fx:id="saltDecrypt" prefHeight="27.0" prefWidth="200.0" promptText="Salt (optional)" />
                         <PasswordField fx:id="passwordDecrypt" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
                         <SplitMenuButton fx:id="methodDecrypt" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" text="Decrypt Method">
@@ -68,10 +72,11 @@
                      </padding>
                   </VBox>
                   <TextArea fx:id="inputDecrypt" layoutX="294.0" layoutY="-3.0" prefHeight="267.0" prefWidth="334.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <TextArea fx:id="outputDecrypt" layoutX="-9.0" layoutY="292.0" prefHeight="126.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <TextArea fx:id="outputDecrypt" layoutY="293.0" prefHeight="126.0" prefWidth="334.0" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="buttonSaveDecrypt" layoutX="193.0" layoutY="426.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Save To File" />
                </children>
             </AnchorPane>
          </content>
       </Tab>
-  </tabs>
+   </tabs>
 </TabPane>

@@ -7,16 +7,19 @@ package com.cypher;
 import com.cypher.encryption.Decrypt;
 import com.cypher.encryption.Encrypt;
 import com.cypher.encryption.KeyFile;
+
 import javafx.application.Application;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
 
 import static java.lang.System.out;
 
@@ -24,7 +27,7 @@ import static java.lang.System.out;
 public class MessageEncrypt extends Application {
 
     @FXML
-    private Button buttonDecrypt, buttonEncrypt;
+    private Button buttonDecrypt, buttonEncrypt, buttonLoadDecrypt, buttonLoadEncrypt, buttonSaveDecrypt, buttonSaveEncrypt;
     @FXML
     private TextArea inputDecrypt, inputEncrypt, outputDecrypt, outputEncrypt;
     @FXML
@@ -67,14 +70,14 @@ public class MessageEncrypt extends Application {
         Decrypt strDecrypt = new Decrypt(str);
         strDecrypt.setPadding("NoPadding");
         KeyFile keyDecrypt = new KeyFile(password, 1);
-        return strDecrypt.decryptToByteValues(keyDecrypt);
+        return strDecrypt.decryptDataToString(keyDecrypt);
     }
 
     private static String stringDecrypt(String str, String password, String salt) throws Exception{
         Decrypt strDecrypt = new Decrypt(str);
         KeyFile keyDecrypt = new KeyFile(password, 1);
         keyDecrypt.setSalt(salt);
-        return strDecrypt.decryptToByteValues(keyDecrypt);
+        return strDecrypt.decryptDataToString(keyDecrypt);
     }
 
     public void encrypt() throws Exception{
@@ -83,7 +86,7 @@ public class MessageEncrypt extends Application {
         String salt = saltEncrypt.getText();
         String output;
 
-        out.printf("[DEBUG] Input: %s%n", input);
+//        out.printf("[DEBUG] Input: %s%n", input);
 
         if (!input.equalsIgnoreCase("")) {
             if (!salt.equalsIgnoreCase("")) {
@@ -104,7 +107,8 @@ public class MessageEncrypt extends Application {
         String salt = saltDecrypt.getText();
         String output;
 
-        out.printf("[DEBUG] Input: %s%n", input);
+//        out.printf("[DEBUG] Input: %s%n", input);
+
         if (!input.equalsIgnoreCase("")) {
             if (!salt.equalsIgnoreCase("")) {
                     output = stringDecrypt(input, password, salt);
@@ -115,5 +119,20 @@ public class MessageEncrypt extends Application {
                     out.println(output);
             }
         }
+    }
+
+    // WIP Method for picking files
+    public void encryptPickFile(){
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            out.printf("[DEBUG] File selected: %s%n", selectedFile.getName());
+        }
+        else {
+            out.printf("[DEBUG] No file selected%n");
+        }
+
     }
 }

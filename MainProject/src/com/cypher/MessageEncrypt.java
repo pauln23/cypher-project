@@ -3,9 +3,7 @@ package com.cypher;
 /**
  * Created by adlerd on 3/2/17.
  */
-
-import com.cypher.encryption.Decrypt;
-import com.cypher.encryption.Encrypt;
+import com.cypher.encryption.Crypto;
 import com.cypher.encryption.KeyFile;
 
 import javafx.application.Application;
@@ -38,7 +36,6 @@ public class MessageEncrypt extends Application {
     private SplitMenuButton methodDecrypt, methodEncrypt;
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -53,31 +50,29 @@ public class MessageEncrypt extends Application {
     }
 
     private static String stringEncrypt(String str, String password) throws Exception{
-        Encrypt strCrypt = new Encrypt(str);
-        strCrypt.setPadding("NoPadding");
+        Crypto crypto = new Crypto(str);
         KeyFile key = new KeyFile(password, 1);
-        return strCrypt.encryptToByteValues(key);
+        return crypto.encryptToByteValues(key);
     }
 
     private static String stringEncrypt(String str, String password, String salt) throws Exception{
-        Encrypt strCrypt = new Encrypt(str);
+        Crypto crypto = new Crypto(str);
         KeyFile key = new KeyFile(password, 1);
         key.setSalt(salt);
-        return strCrypt.encryptToByteValues(key);
+        return crypto.encryptToByteValues(key);
     }
 
     private static String stringDecrypt(String str, String password) throws Exception{
-        Decrypt strDecrypt = new Decrypt(str);
-        strDecrypt.setPadding("NoPadding");
-        KeyFile keyDecrypt = new KeyFile(password, 1);
-        return strDecrypt.decryptDataToString(keyDecrypt);
+        Crypto crypto = new Crypto(str);
+        KeyFile key = new KeyFile(password, 1);
+        return crypto.encryptToByteValues(key);
     }
 
     private static String stringDecrypt(String str, String password, String salt) throws Exception{
-        Decrypt strDecrypt = new Decrypt(str);
-        KeyFile keyDecrypt = new KeyFile(password, 1);
-        keyDecrypt.setSalt(salt);
-        return strDecrypt.decryptDataToString(keyDecrypt);
+        Crypto crypto = new Crypto(str);
+        KeyFile key = new KeyFile(password, 1);
+        key.setSalt(salt);
+        return crypto.encryptToByteValues(key);
     }
 
     public void encrypt() throws Exception{

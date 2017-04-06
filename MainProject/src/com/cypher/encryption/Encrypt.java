@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Arrays;
+import java.util.Base64;
+
+import static java.lang.System.out;
 
 
 /**
@@ -181,7 +184,9 @@ public class Encrypt {
         final Cipher cipher = Cipher.getInstance(encryptionMethod);
         final SecretKeySpec secretKey = new SecretKeySpec(key.wrappedKey().getBytes(),algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        return new String(cipher.doFinal(data), "UTF-8");
+        byte[] cryptedData = cipher.doFinal(data);
+        out.printf("[DEBUG] Before Base64: %s%n", new String(cryptedData));
+        return new String(Base64.getEncoder().encode(cryptedData));
     }
 
     /**
@@ -195,7 +200,7 @@ public class Encrypt {
         final Cipher cipher = Cipher.getInstance(encryptionMethod);
         final SecretKeySpec secretKey = new SecretKeySpec(key.wrappedKey().getBytes(),algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        return cipher.doFinal(data);
+        return Base64.getEncoder().encode(cipher.doFinal(data));
     }
 
     /**
@@ -209,7 +214,7 @@ public class Encrypt {
         byte[] preData;
         // Check if the file is not null
         if (fileIn != null) {
-            // create tem array with the length of the input in 0s
+            // create temp array with the length of the input in 0s
             preData = new byte[(int) this.fileIn.length()];
             final FileInputStream inputStream = new FileInputStream(this.fileIn);
             // Read

@@ -7,9 +7,6 @@ import java.util.Base64;
 
 import static java.lang.System.out;
 
-/**
- * Created by adlerd on 4/4/17.
- */
 
 @SuppressWarnings("Duplicates")
 public class CryptoImpl implements Crypto{

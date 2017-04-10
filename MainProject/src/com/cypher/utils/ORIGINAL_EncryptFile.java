@@ -1,8 +1,6 @@
 //package com.cypher.utils;
 //
-///**
-// * Created by Zachery Shelton on 8/25/13.
-// */
+
 //
 //import com.cypher.encryption.KeyFile;
 //

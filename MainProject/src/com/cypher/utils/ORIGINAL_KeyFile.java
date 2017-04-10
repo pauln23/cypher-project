@@ -1,8 +1,6 @@
 //package com.cypher.utils;
 //
-///**
-// * Created by adlerd on 3/2/17.
-// */
+
 //
 //import java.io.File;
 //import java.io.IOException;

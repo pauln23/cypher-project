@@ -1,8 +1,5 @@
 package com.cypher;
 
-/**
- * Created by adlerd on 3/2/17.
- */
 import com.cypher.encryption.CryptoImpl;
 import com.cypher.encryption.KeyFile;
 

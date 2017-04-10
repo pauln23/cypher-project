@@ -1,9 +1,5 @@
 package com.cypher.encryption;
 
-/**
- * Created by adlerd on 3/2/17.
- */
-
 import com.cypher.utils.FileUtil;
 
 import java.io.File;

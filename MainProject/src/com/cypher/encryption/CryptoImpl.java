@@ -1,8 +1,8 @@
 package com.cypher.encryption;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
 import java.util.Base64;
 
 import static java.lang.System.out;
@@ -12,14 +12,22 @@ import static java.lang.System.out;
  */
 
 @SuppressWarnings("Duplicates")
-public class Crypto {
+public class CryptoImpl implements Crypto{
 
+    Cipher cipher;
+    IvParameterSpec ivspec;
     private String str;
+    private String encrypted;
+    private String decrypted;
     private String algorithm = "AES";
     private String mode = "CBC";
     private String padding = "PKCS5Padding";
     private String encryptionMethod = algorithm + "/" + mode + "/" + padding;
+    private SecretKeySpec secretKey;
     private byte[] data;
+    private byte[] iv = "wTmg4qj8dNszs2ji".getBytes(); // build the initialization vector using the default salt.
+
+
 
 
 
@@ -28,9 +36,10 @@ public class Crypto {
      *
      * @param data
      */
-    public Crypto(final String data) {
+    public CryptoImpl(final String data) {
         this.str = data;
     }
+
 
     public String getAlgorithm() {
         return algorithm;
@@ -56,6 +65,7 @@ public class Crypto {
         this.padding = padding;
     }
 
+
     /**
      * Method to encrypt input into a string
      *
@@ -63,12 +73,16 @@ public class Crypto {
      * @return
      * @throws Exception For any of the many exceptions that could be thrown
      */
-    public String encryptToByteValues(final KeyFile key) throws Exception {
-        data = str.getBytes();
-        Cipher cipher = Cipher.getInstance(encryptionMethod);
-        final SecretKeySpec secretKey = new SecretKeySpec(key.wrappedKey().getBytes(),algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        return new String(cipher.doFinal(data));
+    public String encryptString(final KeyFile key) throws Exception {
+//        data = str.getBytes();
+        cipher = Cipher.getInstance(encryptionMethod);
+        ivspec = new IvParameterSpec(iv);
+        secretKey = new SecretKeySpec(key.wrappedKey().getBytes(), algorithm);
+
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
+        encrypted = Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes()));
+//        return new String(cipher.doFinal(str.getBytes()));
+        return encrypted;
     }
 
     /**
@@ -78,12 +92,12 @@ public class Crypto {
      * @return
      * @throws Exception For any of the many exceptions that could be thrown
      */
-    public String decryptToString(final KeyFile key) throws Exception {
-//        data = Base64.getDecoder().decode(str);
-        data = str.getBytes();
-        Cipher cipher = Cipher.getInstance(encryptionMethod);
-        final SecretKeySpec secretKey = new SecretKeySpec(key.wrappedKey().getBytes(),algorithm);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+    public String decryptString(final KeyFile key) throws Exception {
+        data = Base64.getDecoder().decode(str);
+//        data = str.getBytes();
+        cipher = Cipher.getInstance(encryptionMethod);
+        ivspec = new IvParameterSpec(iv);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
         return new String(cipher.doFinal(data));
     }
 }

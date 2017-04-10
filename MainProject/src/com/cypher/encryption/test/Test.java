@@ -4,35 +4,43 @@ package com.cypher.encryption.test;
  * Created by adlerd on 3/2/17.
  */
 
-import com.cypher.encryption.Crypto;
+import com.cypher.encryption.CryptoImpl;
 import com.cypher.encryption.KeyFile;
 
 import static java.lang.System.*;
 
+@SuppressWarnings("Duplicates")
 public class Test {
-    private static final String password = "1234";
+    private static KeyFile keyFile;
+    private static CryptoImpl cryptoImpl;
+    private static final String password = "1234567812345678";
+    private static final String salt = "wTmg4qj8dNszs2ji";
     private static final String str = "test";
 
-    private static final String encrypted = "֨���œSL��*(M�>{";
-    private static final KeyFile key = new KeyFile(password, 1);
+    private static String encrypted;
+    private static String decrypted;
+    private static String temp;
 
     public static void main(String... args) throws Exception {
 
-//        testStringEncrypt(str, key);
-        testStringDecrypt(encrypted, key);
+        testStringEncrypt();
+        testStringDecrypt();
     }
 
-
     // TEST ENCRYPTION
-    private static void testStringEncrypt(String str, KeyFile k) throws Exception{
-        Crypto crypto = new Crypto(str);
-        out.printf("[TEST] Enrypted: %s%n", crypto.encryptToByteValues(k));
-//        out.println("Encrypted byte[]: " + Arrays.toString(encryption.getBytes()));
+    private static void testStringEncrypt() throws Exception{
+        cryptoImpl = new CryptoImpl(str);
+        keyFile = new KeyFile(password, 1);
+//        keyFile.setSalt(salt);
+        encrypted = cryptoImpl.encryptString(keyFile);
+
+        err.printf("%n[DEBUG] <Test> Encrypted String: %s%n", encrypted);
     }
 
     // TEST DECRYPTION
-    private static void testStringDecrypt(String str, KeyFile k) throws Exception{
-        Crypto crypto = new Crypto(str);
-        out.printf("[TEST] Decrypted: %s%n", crypto.encryptToByteValues(k));
+    private static void testStringDecrypt() throws Exception{
+        decrypted = cryptoImpl.decryptString(keyFile);
+
+        err.printf("%n[DEBUG] <Test> Decrypted String: %s%n", encrypted);
     }
 }

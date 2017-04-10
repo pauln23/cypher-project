@@ -8,61 +8,61 @@ import com.cypher.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 import static java.lang.System.*;
 
+@SuppressWarnings("ALL")
 public class KeyFile {
     private String rawKey;
-    private String salt = "wTmg4qj8dNszs2ji";
+    private String salt; // MUST be 128 bits (16 characters)
     private int keyID;
 
-    public KeyFile(final String rawKey, final int keyID) {
+    public KeyFile(String rawKey, int keyID) {
         this.rawKey = rawKey;
         this.keyID = keyID;
+        this.salt = "wTmg4qj8dNszs2ji"; // Default salt
     }
 
-    public KeyFile(final String rawKey, final int keyID, final KeyFile keyFile) {
+    public KeyFile(String rawKey, int keyID, String salt) {
         this.rawKey = rawKey;
         this.keyID = keyID;
-        this.salt = keyFile.wrappedKey();
+        if (salt.length() == 16) // Check if inputted salt is 128 bits
+            this.salt = salt;
+        else
+            this.salt = "wTmg4qj8dNszs2ji";
     }
 
     // Set custom salt
     public void setSalt(String salt){
-        this.salt = salt;
+        if (salt.length() == 16) // Check if inputted salt is 128 bits
+            this.salt = salt;
+        else
+            err.print("\n[ERROR] Salt MUST be 128 bits (16 characters)! \n");
     }
 
     private String getKey() throws NoSuchAlgorithmException {
-        String output = "";
-        final MessageDigest md = MessageDigest.getInstance("MD5");
-        final byte[] md5 = md.digest(rawKey.getBytes());
-        // Turn the salt String into byte[]
-        final byte[] saltBytes = this.salt.getBytes();
-        int i = 0;
-        out.print("\n[DEBUG] KeyFile: ");
-        for (final byte b : md5) {
-//            output += StringUtil.reverseString(Integer.toHexString(b & saltBytes[i]).substring(0, 1));
-            output += Integer.toHexString(b & saltBytes[i]).substring(0, 1);
-            out.print("" + Integer.toHexString(b & saltBytes[i]).substring(0, 1));
-            if(i < (salt.length() -1)) {
-                i++;
-            }
-            else {
-                i = 0;
-            }
-        }
-        out.println("\n");
-        if(output.length() > 16){
-            return output.substring(0,16).trim();
-        }
-        else {
-            return output.trim();
-        }
+        String output;
+        String keySalt = String.format("%s:%s", rawKey, salt);
+
+        // Hide user password
+        out.print("[DEBUG] <KeyFile> Key-Salt: ");
+        for (char c : rawKey.toCharArray())
+            out.print("*");
+        out.printf(":%s%n", salt);
+
+//        out.printf("[DEBUG] <KeyFile> Key-Salt: %s:%s%n", rawKey, salt);
+
+        output = Base64.getEncoder().encodeToString(keySalt.getBytes());
+        out.printf("[DEBUG] <KeyFile> Encoded Key-Salt: %s%n", output);
+        output = output.substring(0, 16).trim();   // Get the first 16 characters of the output
+        out.printf("[DEBUG] <KeyFile> Trimmed Encoded Key-Salt: %s%n", output);
+        return output;
     }
 
-    String wrappedKey(){
+    // For catching the 'NoSuchAlgorithmException'
+    String wrappedKey() {
         try {
             return getKey();
         } catch (NoSuchAlgorithmException e) {
@@ -71,6 +71,7 @@ public class KeyFile {
         return null;
     }
 
+    // Write the key to a file
     public void writeToFile(String path) throws IOException{
         final File file = new File(path, String.format("key%s.key", this.keyID));
         FileUtil.writeToFile(this.wrappedKey().getBytes(), file);
